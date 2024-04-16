@@ -1,0 +1,40 @@
+{
+    "FForm": {
+        "prefix": "fform",
+        "body": [
+            "import 'package:fform/fform.dart'",
+            "",
+            "class ${1:Name}Form extends FForm {",
+            "   ${1:Name}Form();",
+            "   ",
+            "   @override",
+            "   List<FFormField> get fields => [];",
+            "   ",
+            "   @override",
+            "   List<FForm> get subForms => [];",
+            "}"
+        ],
+        "description": "Create a FForm"
+    },
+    "FField": {
+        "prefix": "ffield",
+        "body": [
+            "import 'package:fform/fform.dart';",
+            "",
+            "enum ${1:Name}Error {",
+            "empty",
+            "}",
+            "",
+            "class ${1:Name}Field extends FFormField<dynamic, ${1:Name}Error> {",
+            "",
+            "   ${1:Name}Field(super.value);",
+            "",
+            "   @override",
+            "   ${1:Name}Error? validator(value) {",
+            "       return null;",
+            "   }",
+            "}"
+        ],
+        "description": "Create a FField"
+    }
+}
