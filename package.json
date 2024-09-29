@@ -28,11 +28,14 @@
       "explorer/context": [
           {
             "command": "fform-flutter.createForm",
-            "when": "explorerResourceIsFolder"
+            "when": "explorerResourceIsFolder",
+            "group": "fform"
+
           },
           {
             "command": "fform-flutter.createField",
-            "when": "explorerResourceIsFolder"
+            "when": "explorerResourceIsFolder",
+            "group": "fform"
           }
       ]
     },
