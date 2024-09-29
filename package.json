@@ -1,7 +1,7 @@
 {
   "name": "fform-flutter",
   "displayName": "FForm Flutter",
-  "publisher": "Contributor",  
+  "publisher": "Contributor",
   "description": "FForm Flutter is a Visual Studio Code extension that helps you create forms and fields for Flutter applications.",
   "version": "0.0.2",
   "repository": "https://github.com/contributors-company",
@@ -9,7 +9,9 @@
     "vscode": "^1.88.0"
   },
   "categories": [
-    "Other", "Snippets", "Extension Packs"
+    "Other",
+    "Snippets",
+    "Extension Packs"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -28,23 +30,22 @@
     ],
     "menus": {
       "explorer/context": [
-          {
-            "command": "fform-flutter.createForm",
-            "when": "explorerResourceIsFolder",
-            "group": "fform"
-
-          },
-          {
-            "command": "fform-flutter.createField",
-            "when": "explorerResourceIsFolder",
-            "group": "fform"
-          }
+        {
+          "command": "fform-flutter.createForm",
+          "when": "explorerResourceIsFolder",
+          "group": "fform"
+        },
+        {
+          "command": "fform-flutter.createField",
+          "when": "explorerResourceIsFolder",
+          "group": "fform"
+        }
       ]
     },
     "snippets": [
       {
-          "language": "dart",
-          "path": "./snippets/dart.json"
+        "language": "dart",
+        "path": "./snippets/dart.json"
       }
     ],
     "configuration": {
@@ -67,14 +68,14 @@
     "test": "vscode-test"
   },
   "devDependencies": {
-    "@types/vscode": "^1.88.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.93.0",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
     "@typescript-eslint/parser": "^7.4.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.3.3",
     "@vscode/test-cli": "^0.0.8",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
   }
 }
