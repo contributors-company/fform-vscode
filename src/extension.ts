@@ -5,7 +5,7 @@ import * as path from 'path';
 
 const formattedNameClass = (name: String) => {
     return name.replace(/_/g, ' ').replace(/(?:^|\s)\S/g, (a) => a.toUpperCase()).replace(' ', ''); 
-}
+};
 
 const createForm = (name: String) => {
     const formattedName = formattedNameClass(name); 
@@ -115,7 +115,7 @@ const createFieldFile = (dirPath: string) => {
             });
         }
     });
-}
+};
 
 const createFormFile = (dirPath: string) => {
     vscode.window.showInputBox({ placeHolder: 'Enter the name'}).then((name) => {
@@ -138,7 +138,7 @@ const createFormFile = (dirPath: string) => {
             });
         }
     });
-}
+};
 
 // This method is called when your extension is deactivated
 export function deactivate() {}

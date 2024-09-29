@@ -1,0 +1,39 @@
+name: CI/CD for VS Code Plugin
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm test
+
+    - name: Package extension
+      run: npm run package
+
+    - name: Install VSCE
+      run: npm install -g vsce
+
+    - name: Login to VSCE
+      run: vsce login ${{ VSCE_PAT }}
+
+    - name: Publish extension
+      run: vsce publish
