@@ -6,7 +6,7 @@
   "version": "0.0.2",
   "repository": "https://github.com/contributors-company",
   "engines": {
-    "vscode": "^1.88.0"
+    "vscode": "^1.93.0"
   },
   "categories": [
     "Other",
