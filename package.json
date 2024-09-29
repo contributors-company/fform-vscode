@@ -3,8 +3,14 @@
   "displayName": "FForm Flutter",
   "publisher": "Contributor",
   "description": "FForm Flutter is a Visual Studio Code extension that helps you create forms and fields for Flutter applications.",
-  "version": "0.0.2",
-  "repository": "https://github.com/contributors-company",
+  "version": "1.0.0",
+  "repository": {
+
+    "type": "git",
+
+    "url": "https://github.com/contributors-company/fform-vscode"
+
+  },
   "engines": {
     "vscode": "^1.93.0"
   },
@@ -26,6 +32,11 @@
         "command": "fform-flutter.createField",
         "title": "FForm: Create Field",
         "when": false
+      },
+      {
+        "command": "fform-flutter.createException",
+        "title": "FForm: Create Exception",
+        "when": false
       }
     ],
     "menus": {
@@ -37,6 +48,11 @@
         },
         {
           "command": "fform-flutter.createField",
+          "when": "explorerResourceIsFolder",
+          "group": "fform"
+        },
+        {
+          "command": "fform-flutter.createException",
           "when": "explorerResourceIsFolder",
           "group": "fform"
         }

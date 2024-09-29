@@ -1,16 +1,12 @@
 # FForm VS Code
 
-### Overview
+## Example Usage
 
-This plugin provides seamless integration with Flutter, enhancing your development workflow with powerful features.
+![Example Video](assets/example.gif)
 
-### Installation
+## Installation Steps
 
-To install the plugin, add the following dependency to your `pubspec.yaml` file:
 
-```yaml
-dependencies:
-    fform: latest_version
+```bash
+    flutter pub add fform
 ```
-
-Then, run `flutter pub get` to fetch the new dependency.

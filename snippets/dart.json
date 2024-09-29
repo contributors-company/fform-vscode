@@ -40,6 +40,8 @@
     "Exception": {
         "prefix": "exception",
         "body": [
+            "import 'package:fform/fform.dart'",
+            "",
             "class ${1:Name}Exception extends FFormException {",
             "   ",
             "   @override",

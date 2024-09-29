@@ -3,8 +3,35 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
+
+interface CreateFileCallback {
+    (dirPath: string): void;
+}
+
+interface CreateContentCallback {
+    (name: string): string;
+}
+
+
 const formattedNameClass = (name: String) => {
-    return name.replace(/_/g, ' ').replace(/(?:^|\s)\S/g, (a) => a.toUpperCase()).replace(' ', ''); 
+    return name.toLowerCase().replace(/_/g, ' ').replace(/(?:^|\s)\S/g, (a) => a.toUpperCase()).replace(' ', ''); 
+};
+
+const _registerCommand = (createFileCallback: CreateFileCallback) => (resource: vscode.Uri) => {
+    let folderPath: string;
+    try {
+        const folderName: string = path.basename(resource.fsPath, path.extname(resource.fsPath));
+        folderPath = path.dirname(`${resource.fsPath}/${folderName}`);
+        createFileCallback(folderPath);
+    } catch (err) {
+        vscode.window.showOpenDialog({ canSelectFolders: true, canSelectFiles: false, canSelectMany: false }).then((folders: vscode.Uri[] | undefined) => {
+            if (folders && folders.length > 0) {
+                const selectedFolder: vscode.Uri = folders[0];
+                const dirPath: string = selectedFolder.fsPath;
+                createFileCallback(dirPath);
+            }
+        });
+    }
 };
 
 const createForm = (name: String) => {
@@ -40,70 +67,43 @@ class ${formattedName}Field extends FFormField<dynamic, ${formattedName}Exceptio
     ${formattedName}Exception? validator(value) {
         return null;
     }
-}
-    
-`;
+}`;
 };
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+const createException = (name: String) => {
+    const formattedName = formattedNameClass(name); 
+    return `import 'package:fform/fform.dart';
+
+class ${formattedName}Exception extends FFormException {
+
+    @override
+    bool get isValid => true;
+}`;
+};
+
 export function activate(context: vscode.ExtensionContext) {
+    const registerCommand = vscode.commands.registerCommand;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "fform-flutter" is now active!');
+	const form = registerCommand('fform-flutter.createForm', _registerCommand(createFormFile));
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposableForm = vscode.commands.registerCommand('fform-flutter.createForm', (resource: vscode.Uri) => {
-        var folderPath;
-        try {
-            const folderName = path.basename(resource.fsPath, path.extname(resource.fsPath));
-            folderPath = path.dirname(`${resource.fsPath}/${folderName}`);
-            createFormFile(folderPath);
-        } catch(err) {
-            vscode.window.showOpenDialog({ canSelectFolders: true, canSelectFiles: false, canSelectMany: false }).then((folders) => {
-                if (folders && folders.length > 0) {
-                    const selectedFolder = folders[0];
-                    const dirPath = selectedFolder.fsPath;
-                    createFormFile(dirPath);
-                }
-            });
-        }
-    });
+    const field = registerCommand('fform-flutter.createField', _registerCommand(createFieldFile));
 
-    const disposableField = vscode.commands.registerCommand('fform-flutter.createField', (resource: vscode.Uri) => {
-        var folderPath;
-        try {
-            const folderName = path.basename(resource.fsPath, path.extname(resource.fsPath));
-            folderPath = path.dirname(`${resource.fsPath}/${folderName}`);
-            createFieldFile(folderPath);
-        } catch(err) {
-            vscode.window.showOpenDialog({ canSelectFolders: true, canSelectFiles: false, canSelectMany: false }).then((folders) => {
-                if (folders && folders.length > 0) {
-                    const selectedFolder = folders[0];
-                    const dirPath = selectedFolder.fsPath;
-                    createFieldFile(dirPath);
-                }
-            });
-        }
-    });
+    const exception = registerCommand('fform-flutter.createException', _registerCommand(createExcepitonFile));
 
-	context.subscriptions.push(disposableForm, disposableField);
+	context.subscriptions.push(form, field, exception);
 
 }
 
-const createFieldFile = (dirPath: string) => {
+const createFile = (dirPath: string, suffixFile: string, content: CreateContentCallback) => {
     vscode.window.showInputBox({ placeHolder: 'Enter the name'}).then((name) => {
         if(name) {
-            const filePath = path.join(dirPath, `${name.toLowerCase()}_field.dart`);
+            const filePath = path.join(dirPath, `${name.toLowerCase()}_${suffixFile}.dart`);
             const uri = vscode.Uri.file(filePath);
             vscode.workspace.fs.writeFile(uri, new Uint8Array()).then(() => {
                 vscode.window.showInformationMessage(`File ${path.basename(filePath)} created successfully in ${dirPath}!`);
                 vscode.workspace.openTextDocument(uri).then((document) => {
                     const edit = new vscode.WorkspaceEdit();
-                    edit.insert(uri, new vscode.Position(0, 0), createField(name));
+                    edit.insert(uri, new vscode.Position(0, 0), content(name));
                     return vscode.workspace.applyEdit(edit);
                 }).then((success) => {
                     if (success) {
@@ -117,28 +117,11 @@ const createFieldFile = (dirPath: string) => {
     });
 };
 
-const createFormFile = (dirPath: string) => {
-    vscode.window.showInputBox({ placeHolder: 'Enter the name'}).then((name) => {
-        if(name) {
-            const filePath = path.join(dirPath, `${name.toLowerCase()}_form.dart`);
-            const uri = vscode.Uri.file(filePath);
-            vscode.workspace.fs.writeFile(uri, new Uint8Array()).then(() => {
-                vscode.window.showInformationMessage(`File ${path.basename(filePath)} created successfully in ${dirPath}!`);
-                vscode.workspace.openTextDocument(uri).then((document) => {
-                    const edit = new vscode.WorkspaceEdit();
-                    edit.insert(uri, new vscode.Position(0, 0), createForm(name));
-                    return vscode.workspace.applyEdit(edit);
-                }).then((success) => {
-                    if (success) {
-                        vscode.window.showInformationMessage('Text inserted successfully!');
-                    } else {
-                        vscode.window.showErrorMessage('Failed to insert text.');
-                    }
-                });
-            });
-        }
-    });
-};
+const createFieldFile = (dirPath: string) => createFile(dirPath, 'field', createField);
+
+const createFormFile = (dirPath: string) => createFile(dirPath, 'form', createForm);
+
+const createExcepitonFile = (dirPath: string) => createFile(dirPath, 'exception', createException);
 
 // This method is called when your extension is deactivated
 export function deactivate() {}
