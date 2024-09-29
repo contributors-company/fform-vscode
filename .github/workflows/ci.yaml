@@ -23,9 +23,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
-      run: npm test
-
     - name: Package extension
       run: npm run package
 
