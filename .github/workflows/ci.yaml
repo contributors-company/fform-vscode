@@ -27,7 +27,7 @@ jobs:
       run: npm install -g vsce
 
     - name: Login to VSCE
-      run: echo "${{ secrets.VSCE_PAT }}" | vsce login Contributor
+      run: vsce login Contributor | echo "${{ secrets.VSCE_PAT }}"
 
     - name: Publish extension
       run: vsce publish
