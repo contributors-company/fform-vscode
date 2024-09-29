@@ -36,5 +36,16 @@
             "}"
         ],
         "description": "Create a FField"
+    },
+    "Exception": {
+        "prefix": "exception",
+        "body": [
+            "class ${1:Name}Exception extends FFormException {",
+            "   ",
+            "   @override",
+            "   bool get isValid => true;",
+            "}"
+        ],
+        "description": "Create an Exception"
     }
 }

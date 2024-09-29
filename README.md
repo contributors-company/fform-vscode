@@ -14,8 +14,3 @@ dependencies:
 ```
 
 Then, run `flutter pub get` to fetch the new dependency.
-
-
-### License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

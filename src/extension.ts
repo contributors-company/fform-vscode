@@ -26,16 +26,18 @@ const createField = (name: String) => {
     const formattedName = formattedNameClass(name); 
     return `import 'package:fform/fform.dart';
 
-enum ${formattedName}Error {
-    empty
+class ${formattedName}Exception extends FFormException {
+
+    @override
+    bool get isValid => true;
 }
 
-class ${formattedName}Field extends FFormField<dynamic, ${formattedName}Error> {
+class ${formattedName}Field extends FFormField<dynamic, ${formattedName}Exception> {
 
     ${formattedName}Field(super.value);
 
     @override
-    ${formattedName}Error? validator(value) {
+    ${formattedName}Exception? validator(value) {
         return null;
     }
 }
