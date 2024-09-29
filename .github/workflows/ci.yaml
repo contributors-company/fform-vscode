@@ -8,26 +8,13 @@ on:
       - main
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20.11.0'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Install VSCE
-      run: npm install -g vsce
-
-    - name: Login to VSCE
-      run: vsce login Contributor | echo ${{ secrets.VSCE_PAT }}
-
-    - name: Publish extension
-      run: vsce publish
+      - uses: actions/checkout@v2
+      - run: npm install
+      - uses: lannonbr/vsce-action@4.0.0
+        with:
+          args: "publish -p $VSCE_PAT"
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
